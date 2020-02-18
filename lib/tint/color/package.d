@@ -63,6 +63,7 @@ class Color {
   /// Returns the string representation of this Color.
   // ! Color.toString() call {Mod, Value}.toString()
   override string toString() const {
+    import std.array : join;
     string[] parts;
     foreach (mod; _mods_) {
       if (mod.toString() == "") continue;
@@ -70,7 +71,7 @@ class Color {
     }
     if (fg.toString() != "") parts ~= fg.toString();
     if (bg.toString() != "") parts ~= bg.toString();
-    return join(parts, ";");
+    return parts.join(";");
   }
 
   private {
@@ -113,12 +114,6 @@ private static:
   int tent(int N) {
     if (N < 10) return 0;
     return N - unit(N);
-  }
-  string join(string[] array, string joiner) {
-    string result;
-    for (int i = 0; i < array.length; i++)
-      result ~= array[i] ~ ((i + 1 < array.length) ? joiner : "");
-    return result;
   }
   const:
     /// 1: bold
