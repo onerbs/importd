@@ -1,6 +1,6 @@
 module lib.tint.color;
 
-import lib.tint.color.mod;
+import lib.tint.color.mode;
 import lib.tint.color.value;
 
 /// The Color class.
@@ -12,15 +12,15 @@ class Color {
   /// The background Value of this Color.
   Value bg;
 
-  /// Default constructor
+  /// The default constructor.
   this() { this(-1); }
 
-  /// The constructor.
+  /// The parametrized constructor.
   this(int code) {
     fg = new Value(38);
     bg = new Value(48);
-    for (int i = 0; i < MAX_MODS; i++) {
-      _mods_[i] = new Mod(MOD_NONE);
+    for (int i = 0; i < MAX_MODES; i++) {
+      modes[i] = new Mode(Modes.NONE);
     }
     const int uCode = unit(code);
     switch (tent(code)) {
@@ -31,31 +31,31 @@ class Color {
   }
 
   /// Adds the `bold` mod to the modlist. (increased intensity)
-  Color bold()      { _toggle_(MOD_BOLD);      return this; }
+  Color bold()      { _toggle_(Modes.BOLD);      return this; }
 
   /// Adds the `faint` mod to the modlist. (decreased intensity)
-  Color faint()     { _toggle_(MOD_FAINT);     return this; }
+  Color faint()     { _toggle_(Modes.FAINT);     return this; }
 
   /// Adds the `italic` mod to the modlist.
-  Color italic()    { _toggle_(MOD_ITALIC);    return this; }
+  Color italic()    { _toggle_(Modes.ITALIC);    return this; }
 
   /// Adds the `underline` mod to the modlist.
-  Color underline() { _toggle_(MOD_UNDERLINE); return this; }
+  Color underline() { _toggle_(Modes.UNDERLINE); return this; }
 
   /// Adds the `blink` mod to the modlist.
-  Color blink()     { _toggle_(MOD_BLINK);     return this; }
+  Color blink()     { _toggle_(Modes.BLINK);     return this; }
 
   /// Adds the `invert` mod to the modlist.
-  Color invert()    { _toggle_(MOD_INVERT);    return this; }
+  Color invert()    { _toggle_(Modes.INVERT);    return this; }
 
   /// Adds the `hidden` mod to the modlist.
-  Color hidden()    { _toggle_(MOD_HIDDEN);    return this; }
+  Color hidden()    { _toggle_(Modes.HIDDEN);    return this; }
 
   /// Reset this Color.
   Color clean() {
     fg.set(8);
     bg.set(8);
-    for (int i = 0; i < MAX_MODS; i++) _mods_[i].set(6);
+    for (int i = 0; i < MAX_MODES; i++) modes[i].set(6);
     return this;
   }
 
@@ -65,7 +65,7 @@ class Color {
   override string toString() const {
     import std.array : join;
     string[] parts;
-    foreach (mod; _mods_) {
+    foreach (mod; modes) {
       if (mod.toString() == "") continue;
       else parts ~= mod.toString();
     }
@@ -75,12 +75,12 @@ class Color {
   }
 
   private {
-    /// The maximim number of Mods can handle. (7)
-    static const ubyte MAX_MODS = 7;
+    /// The maximum number of Modes this Color can handle. (7)
+    static const ubyte MAX_MODES = 7;
 
-    /// The modifiers of this Color.
+    /// The modes of this Color.
     // bold / dim / italic / ...
-    Mod[MAX_MODS] _mods_;
+    Mode[MAX_MODES] modes;
 
     /// Toggles the specified mod
     void _toggle_(int code) {
@@ -98,8 +98,8 @@ class Color {
 
     /// i: index; c: new code
     void _toggleAt(int i, int c) {
-      if (_mods_[i].eq(6)) _mods_[i].set(c);
-      else                 _mods_[i].set(6);
+      if (modes[i].eq(6)) modes[i].set(c);
+      else                modes[i].set(6);
     }
   }
 }
@@ -115,20 +115,3 @@ private static:
     if (N < 10) return 0;
     return N - unit(N);
   }
-  const:
-    /// 1: bold
-    int MOD_BOLD      = 1;
-    /// 2: faint
-    int MOD_FAINT     = 2;
-    /// 3: italic
-    int MOD_ITALIC    = 3;
-    /// 4: underline
-    int MOD_UNDERLINE = 4;
-    /// 5: blink
-    int MOD_BLINK     = 5;
-    /// 6: none
-    int MOD_NONE      = 6;
-    /// 7: invert
-    int MOD_INVERT    = 7;
-    /// 8: hidden
-    int MOD_HIDDEN    = 8;
