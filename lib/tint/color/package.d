@@ -7,58 +7,55 @@ import lib.tint.color.value;
 class Color {
 
   /// The foreground Value of this Color.
-  Value fg;
+  Value fore;
 
   /// The background Value of this Color.
-  Value bg;
+  Value back;
 
   /// The default constructor.
   this() { this(-1); }
 
   /// The parametrized constructor.
-  this(int code) {
-    fg = new Value(38);
-    bg = new Value(48);
-    for (int i = 0; i < MAX_MODES; i++) {
+  this(int k) {
+    fore = new Value(38);
+    back = new Value(48);
+    for (int i = 0; i < NOF_MODES; i++) {
       modes[i] = new Mode(Modes.NONE);
     }
-    const int uCode = unit(code);
-    switch (tent(code)) {
-      case 30: case  90: fg.set(uCode); break;
-      case 40: case 100: bg.set(uCode); break;
-      default: if (uCode >= 0 && uCode <= 7) fg.set(uCode); break;
+    const int code = unit(k);
+    switch (tent(k)) {
+      case 30: case  90: fore.set(code); break;
+      case 40: case 100: back.set(code); break;
+      default: if (code >= 0 && code <= 7) fore.set(code); break;
     }
   }
 
-  /// Adds the `bold` mod to the modlist. (increased intensity)
-  Color bold()      { _toggle_(Modes.BOLD);      return this; }
+  /// Toggles the `bold` mode.
+  Color bold()      { toggleMode(Modes.BOLD);      return this; }
 
-  /// Adds the `faint` mod to the modlist. (decreased intensity)
-  Color faint()     { _toggle_(Modes.FAINT);     return this; }
+  /// Toggles the `faint` mode.
+  Color faint()     { toggleMode(Modes.FAINT);     return this; }
 
-  /// Adds the `italic` mod to the modlist.
-  Color italic()    { _toggle_(Modes.ITALIC);    return this; }
+  /// Toggles the `italic` mode.
+  Color italic()    { toggleMode(Modes.ITALIC);    return this; }
 
-  /// Adds the `underline` mod to the modlist.
-  Color underline() { _toggle_(Modes.UNDERLINE); return this; }
+  /// Toggles the `underline` mode.
+  Color underline() { toggleMode(Modes.UNDERLINE); return this; }
 
-  /// Adds the `blink` mod to the modlist.
-  Color blink()     { _toggle_(Modes.BLINK);     return this; }
+  /// Toggles the `blink` mode.
+  Color blink()     { toggleMode(Modes.BLINK);     return this; }
 
-  /// Adds the `invert` mod to the modlist.
-  Color invert()    { _toggle_(Modes.INVERT);    return this; }
+  /// Toggles the `invert` mode.
+  Color invert()    { toggleMode(Modes.INVERT);    return this; }
 
-  /// Adds the `hidden` mod to the modlist.
-  Color hidden()    { _toggle_(Modes.HIDDEN);    return this; }
+  /// Toggles the `hidden` mode.
+  Color hidden()    { toggleMode(Modes.HIDDEN);    return this; }
 
   /// Reset this Color.
-  Color clean() {
-    fg.set(8);
-    bg.set(8);
-    for (int i = 0; i < MAX_MODES; i++) modes[i].set(6);
+  Color clean() { fore.set(8); back.set(8);
+    for (int i = 0; i < NOF_MODES; i++) modes[i].set(6);
     return this;
   }
-
 
   /// Returns the string representation of this Color.
   // ! Color.toString() call {Mod, Value}.toString()
@@ -69,38 +66,37 @@ class Color {
       if (mod.toString() == "") continue;
       else parts ~= mod.toString();
     }
-    if (fg.toString() != "") parts ~= fg.toString();
-    if (bg.toString() != "") parts ~= bg.toString();
+    if (fore.toString() != "") parts ~= fore.toString();
+    if (back.toString() != "") parts ~= back.toString();
     return parts.join(";");
   }
 
-  private {
-    /// The maximum number of Modes this Color can handle. (7)
-    static const ubyte MAX_MODES = 7;
+private:
+  /// The maximum number of Modes this Color can handle. (7)
+  static const ubyte NOF_MODES = 7;
 
-    /// The modes of this Color.
-    // bold / dim / italic / ...
-    Mode[MAX_MODES] modes;
+  /// The modes of this Color.
+  // bold / dim / italic / ...
+  Mode[NOF_MODES] modes;
 
-    /// Toggles the specified mod
-    void _toggle_(int code) {
-      switch (code) {
-        case 1: _toggleAt(0, 1); break;
-        case 2: _toggleAt(1, 2); break;
-        case 3: _toggleAt(2, 3); break;
-        case 4: _toggleAt(3, 4); break;
-        case 5: _toggleAt(4, 5); break;
-        case 7: _toggleAt(5, 7); break;
-        case 8: _toggleAt(6, 8); break;
-        default: break;
-      }
+  /// Toggles the specified mod
+  void toggleMode(int code) {
+    switch (code) {
+      case 1: toggle(0, 1); break;
+      case 2: toggle(1, 2); break;
+      case 3: toggle(2, 3); break;
+      case 4: toggle(3, 4); break;
+      case 5: toggle(4, 5); break;
+      case 7: toggle(5, 7); break;
+      case 8: toggle(6, 8); break;
+      default: break;
     }
+  }
 
-    /// i: index; c: new code
-    void _toggleAt(int i, int c) {
-      if (modes[i].eq(6)) modes[i].set(c);
-      else                modes[i].set(6);
-    }
+  /// i: index; c: new code
+  void toggle(int i, int c) {
+    if (modes[i].eq(6)) modes[i].set(c);
+    else                modes[i].set(6);
   }
 }
 

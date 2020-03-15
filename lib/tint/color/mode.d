@@ -9,13 +9,13 @@ class Mode {
   private int code;
 
   /// The default constructor.
-  this(int c) { code = c; }
+  this(int k) { code = k; }
 
   /// Change the Mode's code.
-  void set(int c) { code = c; }
+  void set(int k) { code = k; }
 
   /// Check if the value of this Mode is the provided value.
-  bool eq(int c) { return code == c; }
+  bool eq(int k) { return code == k; }
 
   /// The string representation of this Mode.
   /// It will return an empty string if the code is not 0-5, 7 or 8.
