@@ -1,9 +1,8 @@
 module plu.random;
 
-import std.random : uniform;
-
 /// returns a random number [N, M]
 int _int(int N, int M) {
+  import std.random : uniform;
   return uniform!"[]"(N, M);
 }
 
