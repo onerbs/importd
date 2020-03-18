@@ -1,7 +1,7 @@
 module plu.tint;
 
 import lib.tint.color;
-import plu.random;
+import plu.rnd;
 
 /// The Tint class.
 struct Tint {
@@ -31,7 +31,7 @@ struct Tint {
   Tint gray() {    color.fore.set(7); return this; }
 
   /// Set this Tinted text to gray foreground color.
-  Tint random() {  color.fore.set(_int(7)); return this; }
+  Tint random() {  color.fore.set(rnd(7)); return this; }
 
 
   /// Set this Tinted text to black foreground color.
@@ -59,7 +59,7 @@ struct Tint {
   Tint bright_gray() {    color.fore.bright(7); return this; }
 
   /// Set this Tinted text to gray foreground color.
-  Tint bright_random() {  color.fore.bright(_int(7)); return this; }
+  Tint bright_random() {  color.fore.bright(rnd(7)); return this; }
 
 
   /// Set this Tinted text to black background color.
@@ -87,7 +87,7 @@ struct Tint {
   Tint on_gray() {    color.back.set(7); return this; }
 
   /// Set this Tinted text to gray background color.
-  Tint on_random() {  color.back.set(_int(7)); return this; }
+  Tint on_random() {  color.back.set(rnd(7)); return this; }
 
 
   /// Set this Tinted text to black background color.
@@ -115,7 +115,7 @@ struct Tint {
   Tint on_bright_gray() {    color.back.bright(7); return this; }
 
   /// Set this Tinted text to gray background color.
-  Tint on_bright_random() {  color.back.bright(_int(7)); return this; }
+  Tint on_bright_random() {  color.back.bright(rnd(7)); return this; }
 
 
   /// Apply the bold modifier to this Tint.
