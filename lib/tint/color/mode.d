@@ -1,7 +1,5 @@
 module lib.tint.color.mode;
 
-import std.string : fmt = format;
-
 /// The Mode Type.
 class Mode {
 
@@ -20,6 +18,7 @@ class Mode {
   /// The string representation of this Mode.
   /// It will return an empty string if the code is not 0-5, 7 or 8.
   override string toString() const {
+    import std.string : fmt = format;
     return (code == 6 || code < 1 || code > 8) ? "" : fmt("0%d", code);
   }
 

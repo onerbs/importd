@@ -17,6 +17,7 @@ class Color {
 
   /// The parametrized constructor.
   this(int k) {
+    import lib.tools : unit, tent;
     fore = new Value(38);
     back = new Value(48);
     for (int i = 0; i < NOF_MODES; i++) {
@@ -99,15 +100,3 @@ private:
     else                modes[i].set(6);
   }
 }
-
-private static:
-  /// returns the units of number. 37 ret 7
-  int unit(int N) {
-    while (N > 10) N -= 10;
-    return N;
-  }
-  /// returns the tens of number. 37 ret 30
-  int tent(int N) {
-    if (N < 10) return 0;
-    return N - unit(N);
-  }
