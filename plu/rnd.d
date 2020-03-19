@@ -1,4 +1,4 @@
-module plu.random;
+module plu.rnd;
 
 import std.ascii;
 import std.conv : to;

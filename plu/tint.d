@@ -1,6 +1,6 @@
 module plu.tint;
-
 import lib.tint.color;
+
 import plu.rnd;
 
 /// The Tint class.
@@ -34,34 +34,6 @@ struct Tint {
   Tint random() {  color.fore.set(rnd(7)); return this; }
 
 
-  /// Set this Tinted text to black foreground color.
-  Tint bright_black() {   color.fore.bright(0); return this; }
-
-  /// Set this Tinted text to red foreground color.
-  Tint bright_red() {     color.fore.bright(1); return this; }
-
-  /// Set this Tinted text to green foreground color.
-  Tint bright_green() {   color.fore.bright(2); return this; }
-
-  /// Set this Tinted text to yellow foreground color.
-  Tint bright_yellow() {  color.fore.bright(3); return this; }
-
-  /// Set this Tinted text to blue foreground color.
-  Tint bright_blue() {    color.fore.bright(4); return this; }
-
-  /// Set this Tinted text to magenta foreground color.
-  Tint bright_magenta() { color.fore.bright(5); return this; }
-
-  /// Set this Tinted text to cyan foreground color.
-  Tint bright_cyan() {    color.fore.bright(6); return this; }
-
-  /// Set this Tinted text to gray foreground color.
-  Tint bright_gray() {    color.fore.bright(7); return this; }
-
-  /// Set this Tinted text to gray foreground color.
-  Tint bright_random() {  color.fore.bright(rnd(7)); return this; }
-
-
   /// Set this Tinted text to black background color.
   Tint on_black() {   color.back.set(0); return this; }
 
@@ -90,32 +62,11 @@ struct Tint {
   Tint on_random() {  color.back.set(rnd(7)); return this; }
 
 
-  /// Set this Tinted text to black background color.
-  Tint on_bright_black() {   color.back.bright(0); return this; }
+  /// toggle the brightness of this color
+  Tint bright() {    color.fore.bright(color.fore.value); return this; }
 
-  /// Set this Tinted text to red background color.
-  Tint on_bright_red() {     color.back.bright(1); return this; }
-
-  /// Set this Tinted text to green background color.
-  Tint on_bright_green() {   color.back.bright(2); return this; }
-
-  /// Set this Tinted text to yellow background color.
-  Tint on_bright_yellow() {  color.back.bright(3); return this; }
-
-  /// Set this Tinted text to blue background color.
-  Tint on_bright_blue() {    color.back.bright(4); return this; }
-
-  /// Set this Tinted text to magenta background color.
-  Tint on_bright_magenta() { color.back.bright(5); return this; }
-
-  /// Set this Tinted text to cyan background color.
-  Tint on_bright_cyan() {    color.back.bright(6); return this; }
-
-  /// Set this Tinted text to gray background color.
-  Tint on_bright_gray() {    color.back.bright(7); return this; }
-
-  /// Set this Tinted text to gray background color.
-  Tint on_bright_random() {  color.back.bright(rnd(7)); return this; }
+  /// toggle the brightness of this color
+  Tint bright_bg() { color.back.bright(color.back.value); return this; }
 
 
   /// Apply the bold modifier to this Tint.
@@ -145,17 +96,31 @@ struct Tint {
     this.text = text;
     return this;
   }
+  unittest {
+    auto test = Tint();
+    test.set("ABCDE");
+    assert(test.text == "ABCDE");
+  }
 
   /// Append the specified text to the begining of the tinted text.
   Tint pre(string text) {
     return set(text ~ this.text);
+  }
+  unittest {
+    auto test = Tint("CDE");
+    test.pre("AB");
+    assert(test.text == "ABCDE");
   }
 
   /// Append the specified text to the begining of the tinted text.
   Tint add(string text) {
     return set(this.text ~ text);
   }
-
+  unittest {
+    auto test = Tint("AB");
+    test.add("CDE");
+    assert(test.text == "ABCDE");
+  }
 
   /// Initialize from text.
   this(string text) {
