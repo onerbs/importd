@@ -25,9 +25,9 @@ class Color {
     }
     const int code = unit(k);
     switch (tent(k)) {
-      case 30: case  90: fore.set(code); break;
-      case 40: case 100: back.set(code); break;
-      default: if (code >= 0 && code <= 7) fore.set(code); break;
+      case 30: case  90: fore.set(k); break;
+      case 40: case 100: back.set(k); break;
+      default: fore.set(code); break;
     }
   }
 
