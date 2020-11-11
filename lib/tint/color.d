@@ -1,102 +1,98 @@
 module lib.tint.color;
-
-import lib.tint.color.mode;
-import lib.tint.color.value;
+import lib.tint.value;
 
 /// The Color class.
 class Color {
-
   /// The foreground Value of this Color.
-  Value fore;
+  Value fg;
 
   /// The background Value of this Color.
-  Value back;
+  Value bg;
 
   /// The default constructor.
-  this() { this(-1); }
-
-  /// The parametrized constructor.
-  this(int k) {
-    import lib.tools : unit, tent;
-    fore = new Value(38);
-    back = new Value(48);
+  this() {
+    fg = new Value(3, 9);
+    bg = new Value(4, 9);
     for (int i = 0; i < NOF_MODES; i++) {
-      modes[i] = new Mode(Modes.NONE);
-    }
-    const int code = unit(k);
-    switch (tent(k)) {
-      case 30: case  90: fore.set(k); break;
-      case 40: case 100: back.set(k); break;
-      default: fore.set(code); break;
+      modes[i] = false;
     }
   }
 
   /// Toggles the `bold` mode.
-  Color bold()      { toggleMode(Modes.BOLD);      return this; }
+  void bold() {
+    toggleMode(0);
+  }
 
   /// Toggles the `faint` mode.
-  Color faint()     { toggleMode(Modes.FAINT);     return this; }
+  void faint() {
+    toggleMode(1);
+  }
 
   /// Toggles the `italic` mode.
-  Color italic()    { toggleMode(Modes.ITALIC);    return this; }
+  void italic() {
+    toggleMode(2);
+  }
 
   /// Toggles the `underline` mode.
-  Color underline() { toggleMode(Modes.UNDERLINE); return this; }
+  void underline() {
+    toggleMode(3);
+  }
 
   /// Toggles the `blink` mode.
-  Color blink()     { toggleMode(Modes.BLINK);     return this; }
+  void blink() {
+    toggleMode(4);
+  }
+
+  /// Toggles the `rapid_blink` mode.
+  void rapid_blink() {
+    toggleMode(5);
+  }
 
   /// Toggles the `invert` mode.
-  Color invert()    { toggleMode(Modes.INVERT);    return this; }
+  void invert() {
+    toggleMode(6);
+  }
 
   /// Toggles the `hidden` mode.
-  Color hidden()    { toggleMode(Modes.HIDDEN);    return this; }
+  void hidden() {
+    toggleMode(7);
+  }
 
-  /// Reset this Color.
-  Color clean() { fore.set(8); back.set(8);
-    for (int i = 0; i < NOF_MODES; i++) modes[i].set(6);
-    return this;
+  /// Toggles the `strike` mode.
+  void strike() {
+    toggleMode(8);
   }
 
   /// Returns the string representation of this Color.
-  // ! Color.toString() call {Mod, Value}.toString()
   override string toString() const {
     import std.array : join;
+    import std.conv : to;
+
     string[] parts;
-    foreach (mod; modes) {
-      if (mod.toString() == "") continue;
-      else parts ~= mod.toString();
+    for (int i = 0; i < NOF_MODES; i++) {
+      if (modes[i]) {
+        parts ~= to!string(i);
+      }
     }
-    if (fore.toString() != "") parts ~= fore.toString();
-    if (back.toString() != "") parts ~= back.toString();
+    if (fg.unit < 9) {
+      parts ~= fg.toString();
+    }
+    if (bg.unit < 9) {
+      parts ~= bg.toString();
+    }
     return parts.join(";");
   }
 
 private:
-  /// The maximum number of Modes this Color can handle. (7)
-  static const ubyte NOF_MODES = 7;
+  /// The maximum number of Modes this Color can handle. (9)
+  static const ubyte NOF_MODES = 9;
 
   /// The modes of this Color.
-  // bold / dim / italic / ...
-  Mode[NOF_MODES] modes;
+  //// bold / dim / italic / ...
+  bool[NOF_MODES] modes;
 
-  /// Toggles the specified mod
-  void toggleMode(int code) {
-    switch (code) {
-      case 1: toggle(0, 1); break;
-      case 2: toggle(1, 2); break;
-      case 3: toggle(2, 3); break;
-      case 4: toggle(3, 4); break;
-      case 5: toggle(4, 5); break;
-      case 7: toggle(5, 7); break;
-      case 8: toggle(6, 8); break;
-      default: break;
-    }
-  }
-
-  /// i: index; c: new code
-  void toggle(int i, int c) {
-    if (modes[i].eq(6)) modes[i].set(c);
-    else                modes[i].set(6);
+  /// Toggles the specified mode.
+  void toggleMode(int mode) {
+    modes[mode] = !modes[mode];
   }
 }
