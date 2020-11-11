@@ -3,7 +3,7 @@ module plu.rnd;
 import std.ascii;
 import std.conv : to;
 
-/// Return a random element of the int[]
+/// Return a random element of the provided array
 T any(T)(T[] arr) {
   return arr[rnd(to!int(arr.length))];
 }
@@ -16,6 +16,7 @@ char any(string str) {
 /// returns a random number [N, M]
 int rnd(int N, int M) {
   import std.random : uniform;
+
   return uniform!"[]"(N, M);
 }
 
@@ -52,9 +53,9 @@ string str(int len, bool up = false) {
       result ~= digit();
     } else {
       if (up) {
-        result ~= upper(); 
+        result ~= upper();
       } else {
-        result ~= lower(); 
+        result ~= lower();
       }
     }
   }
