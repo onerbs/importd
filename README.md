@@ -2,30 +2,25 @@
 
 Another D library
 
+
 ## Installation
 
-Save the root directory into the `$IMPORT_D` environment variable
+Save the root directory into the `DIM` environment variable
 
-``` sh
-export IMPORT_D=/code/dlang/importd
-```
+	# in your ~/.bashrc or similar
+	export DIM=/code/dlang/importd
 
 Clone this repo into the selected folder
 
-``` sh
-git clone https://github.com/onerbs/importd.git $IMPORT_D
-```
+	$ git clone https://github.com/onerbs/importd.git $DIM
+
 
 ## Usage
 
 Go to your project's folder...
 
-``` sh
-cd /code/dlang/example
-```
+	$ cd /code/dlang/example
 
 ...and [dim](https://github.com/onerbs/dim) it _!_
 
-``` sh
-dim example -plu tint random
-```
+	$ dim example.d -plu tint rnd
